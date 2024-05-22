@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const registerUser = asyncHandler(async (req, res) => {
     const { name, email, username, password } = req.body;
-    console.log(name, email, username, password)
+    console.log(req.body)
     const user = new User({
         name,
         email,
@@ -15,9 +15,9 @@ export const registerUser = asyncHandler(async (req, res) => {
 
     const createdUser = await user.save();
 
-    const token = jwt.sign(createdUser._id, process.env.JWT_SECRET)
+    const token = jwt.sign(createdUser.username, process.env.JWT_SECRET)
 
-    res.status(201).json(createdUser, token);
+    res.status(201).json({createdUser, token});
 });
 
 const postBlog = asyncHandler(async (req, res) => {
